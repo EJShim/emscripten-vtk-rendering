@@ -7,4 +7,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_WEBGL2=1")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s FULL_ES3=1")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -s USE_GLFW=3")
 
+find_package(VTK 8.1.0 REQUIRED)
+include(${VTK_USE_FILE})
+
 add_executable(index src/main.cpp)
+
+target_link_libraries(index ${VTK_LIBRARIES})
