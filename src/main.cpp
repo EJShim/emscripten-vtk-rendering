@@ -1,9 +1,10 @@
-#include "linmath.h"
+
+#define GLFW_INCLUDE_ES3
 
 #include <emscripten/emscripten.h>
-#define GLFW_INCLUDE_ES3
+#include "linmath.h"
+
 #include <GLFW/glfw3.h>
-#include <GLES3/gl3.h>
 #include <iostream>
 
 GLFWwindow * window;
@@ -48,10 +49,7 @@ extern "C" void EMSCRIPTEN_KEEPALIVE toggle_background_color() {
     background_is_black = !background_is_black; 
 }
 
-
-
-
-static void generate_frame() {
+void GenerateFrame() {
     float ratio;
     int width, height;
     mat4x4 m, p, mvp;
@@ -76,10 +74,10 @@ static void generate_frame() {
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
-    glfwPollEvents();
 }
 
 int main() {
+
 
     if (!glfwInit()) {
         fputs("Faileid to initialize GLFW", stderr);
@@ -91,15 +89,10 @@ int main() {
 
     window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
 
-    if (!window) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
-        glfwTerminate();
-        emscripten_force_exit(EXIT_FAILURE);
-    }
-
     glfwMakeContextCurrent(window);
-
     glGenBuffers(1, &vertex_buffer);
+
+
     glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
@@ -127,8 +120,7 @@ int main() {
 
 
 
-    //generate_frame();
 
 
-    emscripten_set_main_loop(generate_frame, 0, 0);
+    emscripten_set_main_loop(GenerateFrame, 0, 0);
 }

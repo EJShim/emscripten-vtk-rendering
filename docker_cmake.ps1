@@ -1,0 +1,1 @@
+docker run --rm -it -v ${pwd}:/work -w /work/build vtk-opengles cmake -DVTK_DIR:PATH=/VTK-BUILD-GLES ..
