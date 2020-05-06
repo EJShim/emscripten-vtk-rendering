@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
+project(test)
 
 if(EMSCRIPTEN)
     message("compile emscripten")
@@ -13,6 +14,16 @@ else()
 endif()
 
 _add_executable(index src/main.cpp)
+
+
+#Add VTK
+find_package(VTK REQUIRED)
+include(${VTK_USE_FILE})
+
+_target_link_libraries(index
+  PRIVATE
+  ${VTK_LIBRARIES}
+)
 
 
 if(NOT EMSCRIPTEN)
