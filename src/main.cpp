@@ -1,9 +1,9 @@
 
-#define GLFW_INCLUDE_ES3
+//#define GLFW_INCLUDE_ES3
+// #include <emscripten/emscripten.h>
 
-#include <emscripten/emscripten.h>
 #include "linmath.h"
-
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -21,6 +21,8 @@ static const struct
     {  0.6f, -0.4f, 0.f, 1.f, 0.f },
     {   0.f,  0.6f, 0.f, 0.f, 1.f }
 };
+
+
 static const char* vertex_shader_text =
     "#version 300 es\n"
     "uniform mat4 MVP;\n"
@@ -41,14 +43,6 @@ static const char* fragment_shader_text =
     "    o_color = vec4(i_color, 1.0);\n"
     "}\n";
 
-
-static bool background_is_black = true;
-
-// the function called by the javascript code
-extern "C" void EMSCRIPTEN_KEEPALIVE toggle_background_color() { 
-    background_is_black = !background_is_black; 
-}
-
 void GenerateFrame() {
     float ratio;
     int width, height;
@@ -58,11 +52,7 @@ void GenerateFrame() {
     glViewport(0, 0, width, height);
     
 
-    // Clear the screen
-    if( background_is_black )
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    else
-        glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    glClearColor(1.0f, 0.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
     
@@ -74,22 +64,39 @@ void GenerateFrame() {
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);
+
+    glfwPollEvents();
 }
 
 int main() {
 
 
-    if (!glfwInit()) {
-        fputs("Faileid to initialize GLFW", stderr);
-        emscripten_force_exit(EXIT_FAILURE);
+    if (!glfwInit() || !glewInit()) {
+        std::cout << "Failed to Initialized" << std::endl;
     }
+
+
+
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
     window = glfwCreateWindow(640, 480, "My Title", NULL, NULL);
+    if (!window)
+    {
+        std::cout << "fialed' <<" << std::endl;
+        glfwTerminate();
+        exit(EXIT_FAILURE);
+    }
+
+    std::cout << "succ" << std::endl;
 
     glfwMakeContextCurrent(window);
+    
+
+    std::cout << "context current" << std::endl;
+
+
     glGenBuffers(1, &vertex_buffer);
 
 
@@ -118,9 +125,14 @@ int main() {
     glEnableVertexAttribArray(vcol_location);
     glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, (void*) (sizeof(float) * 2));
 
+    std::cout << "Start Rendering" << std::endl;
+
+    for(int i=0 ; i<1000 ; i++){
+        std::cout << i << std::endl;
+        //GenerateFrame();
+    }
 
 
 
-
-    emscripten_set_main_loop(GenerateFrame, 0, 0);
+    // emscripten_set_main_loop(GenerateFrame, 0, 0);
 }
