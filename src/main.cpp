@@ -1,5 +1,5 @@
 
-//#define GLFW_INCLUDE_ES3
+// #define GLFW_INCLUDE_ES3
 // #include <emscripten/emscripten.h>
 
 #include "linmath.h"
@@ -127,12 +127,12 @@ int main() {
 
     std::cout << "Start Rendering" << std::endl;
 
-    for(int i=0 ; i<1000 ; i++){
-        std::cout << i << std::endl;
-        //GenerateFrame();
-    }
+
+    //main loop func??
+    GenerateFrame();
 
 
 
+    // emscripten_request_animation_frame_loop();
     // emscripten_set_main_loop(GenerateFrame, 0, 0);
 }

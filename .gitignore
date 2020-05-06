@@ -1,4 +1,3 @@
-build/
-build-binary/
+build*/
 .vscode/
 .vs/

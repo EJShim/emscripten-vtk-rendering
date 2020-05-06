@@ -1,1 +1,1 @@
-docker run --rm -it -v ${pwd}:/work -w /work/build vtk-opengles make
+docker run --rm -it -v ${pwd}:/work -w /work/build kitware/itk-js-vtk make

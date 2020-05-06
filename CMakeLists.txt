@@ -12,7 +12,7 @@ else()
     include_directories("C:/Libs/glew-2.1.0/include" "C:/Libs/GLFW/include")
 endif()
 
-add_executable(index src/main.cpp)
+_add_executable(index src/main.cpp)
 
 
 if(NOT EMSCRIPTEN)
